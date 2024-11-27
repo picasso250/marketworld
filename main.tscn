@@ -22,7 +22,7 @@ grow_vertical = 2
 maturity_interval = 1
 
 [node name="Pawn" parent="." instance=ExtResource("2_rkcax")]
-position = Vector2(86, 85)
+position = Vector2(99, 107)
 move_speed = 666.0
 
 [connection signal="debug_button_pressed" from="Pawn" to="." method="_on_pawn_debug_button_pressed"]

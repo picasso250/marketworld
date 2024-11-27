@@ -12,7 +12,6 @@ var is_progress_bar_active: bool = false  # New variable to track if the progres
 var _task_completed: bool = false  # New variable to track if the task is completed.
 
 
-
 func _process(delta: float) -> void:
 	# Move towards target if a target is set.
 	move_towards_target(delta)
@@ -30,12 +29,11 @@ func start_progress_bar(task_duration: float) -> void:
 	
 	is_progress_bar_active = true  # Set the flag to indicate the progress bar is active.
 	var progress_bar = $ProgressBar as ProgressBar  # 假设进度条节点是 ProgressBar 类型，并作为本脚本的子节点。
-	if progress_bar == null:
-		print("ProgressBar node not found!")
-		return
 
 	progress_bar.value = 0  # 初始化为 0
 	progress_bar.visible = true  # 确保进度条可见
+	
+	update_status("收获中……")
 
 	# 使用 Tween 逐渐增长进度条
 	var tween = get_tree().create_tween()
@@ -48,6 +46,8 @@ func after_proc():
 	is_progress_bar_active = false  # Reset the flag when the task is complete.
 	_task_completed = true  # Set the task completed flag.
 	$ProgressBar.visible = false
+	
+	hide_status()
 
 # Updated function to set the current task with a target, type, and task_target.
 func set_current_task(target: Node, task_type: String) -> void:
@@ -89,3 +89,19 @@ func _clear_target() -> void:
 # Debug button signal method.
 func _on_button_pressed():
 	emit_signal("debug_button_pressed")
+
+func set_status(text: String) -> void:
+	$StatusText.text = text
+
+func show_status() -> void:
+	$StatusText.show()
+
+func hide_status() -> void:
+	$StatusText.hide()
+
+func get_status() -> String:
+	return $StatusText.text
+
+func update_status(text: String) -> void:
+	set_status(text)
+	show_status()
