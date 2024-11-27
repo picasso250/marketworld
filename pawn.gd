@@ -11,6 +11,7 @@ var _current_target_position: Vector2 = Vector2.ZERO
 var _task_type: String = ""
 @export var move_speed: float = 100.0  # Speed at which the pawn moves towards the target.
 var _task_target: Node = null  # New variable to store the task target.
+var has_moving_target: bool = false  # Renamed variable to track if the pawn has a moving target.
 
 func _ready():
 	var progress_bar = get_node(progress_bar_node) as ColorRect
@@ -80,20 +81,25 @@ func has_reached_target() -> bool:
 	var tolerance: float = move_speed * get_process_delta_time()  # 使用 delta 时间计算容差
 	return position.distance_to(_current_target_position) <= tolerance
 
-# New method to move towards a target at the specified speed, using speed * delta as tolerance.
+# New method to move towards a target at the specified speed, using has_reached_target for the check.
 func move_towards_target(delta: float) -> void:
-	var tolerance: float = move_speed * delta  # Calculate tolerance based on speed and delta time.
-	
-	if position.distance_to(_current_target_position) > tolerance:
+	if has_moving_target and not has_reached_target():
 		var direction = (_current_target_position - position).normalized()
 		position += direction * move_speed * delta
-	else:
+	elif has_moving_target:
 		position = _current_target_position  # Snap to the target once within tolerance.
-
-# Debug button signal method.
-func _on_button_pressed():
-	emit_signal("debug_button_pressed")
+		_clear_target()  # Clear the target once it’s reached.
 
 # New method to set the current target position.
 func set_target_position(target_position: Vector2) -> void:
 	_current_target_position = target_position
+	has_moving_target = true  # Set the flag to indicate there is a target.
+
+# Function to clear the target when it's reached or when we want to reset it.
+func _clear_target() -> void:
+	has_moving_target = false  # Clear the target flag.
+	_current_target_position = Vector2.ZERO  # Optionally reset position, or just leave it as it is.
+
+# Debug button signal method.
+func _on_button_pressed():
+	emit_signal("debug_button_pressed")
