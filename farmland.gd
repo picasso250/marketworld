@@ -1,7 +1,7 @@
 extends ColorRect
 
 # 定义农田成熟时间间隔（单位：秒），这里假设为10秒，可根据实际需求修改
-const MATURITY_INTERVAL = 10
+@export var maturity_interval = 10
 
 # 用于记录自上次成熟后经过的时间
 var time_since_last_maturity = 0
@@ -17,7 +17,7 @@ func _process(delta):
 	update_tooltip()
 
 	# 判断是否到达成熟时间间隔
-	if time_since_last_maturity >= MATURITY_INTERVAL:
+	if time_since_last_maturity >= maturity_interval:
 		is_mature = true
 		time_since_last_maturity = 0
 

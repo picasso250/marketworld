@@ -8,3 +8,9 @@ offset_bottom = 330.0
 tooltip_text = "xxxxss"
 color = Color(0.419608, 0.556863, 0.137255, 1)
 script = ExtResource("1_dl73f")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "农田"

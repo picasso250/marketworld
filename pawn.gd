@@ -64,6 +64,11 @@ func set_current_task(target: Node, task_type: String) -> void:
 	# Print the task type.
 	print("Task type: ", _task_type)
 
+# 判断是否到达目标位置
+func has_reached_target() -> bool:
+	var tolerance: float = move_speed * get_process_delta_time()  # 使用 delta 时间计算容差
+	return position.distance_to(_current_target_position) <= tolerance
+
 # New method to move towards a target at the specified speed, using speed * delta as tolerance.
 func move_towards_target(delta: float) -> void:
 	var tolerance: float = move_speed * delta  # Calculate tolerance based on speed and delta time.
