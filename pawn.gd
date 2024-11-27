@@ -25,7 +25,7 @@ func _ready():
 	progress_bar.position.x = -texture_size.x / 2
 
 # Function to start growing the progress bar over a given duration.
-func start_progress_bar_growth(duration: float, callback: Callable) -> void:
+func start_progress_bar(duration: float, callback: Callable) -> void:
 	if duration <= 0.0:
 		push_error("Duration must be greater than 0")
 		return
@@ -55,7 +55,7 @@ func _process(delta: float) -> void:
 			# for example `get_task_duration()` which should return the task's duration.
 			var task_duration = _task_target.get("task_duration")  # Replace with the actual property or method to get the duration.
 			if task_duration > 0.0:
-				start_progress_bar_growth(task_duration,after_proc)
+				start_progress_bar(task_duration,after_proc)
 				
 		return
 	
