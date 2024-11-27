@@ -9,8 +9,8 @@ var _elapsed_time: float = 0.0
 var _is_progressing: bool = false
 var _current_target_position: Vector2 = Vector2.ZERO
 var _task_type: String = ""
-var _task_speed: float = 100.0  # Adjust the speed as needed.
 @export var move_speed: float = 100.0  # Speed at which the pawn moves towards the target.
+var _task_target: Node = null  # New variable to store the task target.
 
 func _ready():
 	var progress_bar = get_node(progress_bar_node) as ColorRect
@@ -44,6 +44,15 @@ func _process(delta: float) -> void:
 	if not _is_progressing:
 		# Move towards target if a target is set.
 		move_towards_target(delta)
+		
+		# Check if the target has been reached and start the progress bar growth.
+		if has_reached_target() and _task_target != null:
+			# Assuming that the task target has a method to get the task duration, 
+			# for example `get_task_duration()` which should return the task's duration.
+			var task_duration = _task_target.get("task_duration")  # Replace with the actual property or method to get the duration.
+			if task_duration > 0.0:
+				start_progress_bar_growth(task_duration)
+				
 		return
 	
 	_elapsed_time += delta
@@ -56,9 +65,11 @@ func _process(delta: float) -> void:
 	if _progress >= 1.0:
 		_is_progressing = false
 
-# Function to set the current task with a target and type, and move towards the target.
+
+# Updated function to set the current task with a target, type, and task_target.
 func set_current_task(target: Node, task_type: String) -> void:
 	_task_type = task_type
+	_task_target = target  # Set the task target.
 	set_target_position(target.get_center_position())
 	
 	# Print the task type.
