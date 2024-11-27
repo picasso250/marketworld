@@ -7,8 +7,8 @@ signal debug_button_pressed
 var _current_target_position: Vector2 = Vector2.ZERO
 var _task_type: String = ""
 var _task_target: Node = null  # New variable to store the task target.
-var has_moving_target: bool = false  # Renamed variable to track if the pawn has a moving target.
-var is_progress_bar_active: bool = false  # New variable to track if the progress bar is active.
+var _has_moving_target: bool = false  # Renamed variable to track if the pawn has a moving target.
+var _is_progress_bar_active: bool = false  # New variable to track if the progress bar is active.
 var _task_completed: bool = false  # New variable to track if the task is completed.
 
 
@@ -17,17 +17,17 @@ func _process(delta: float) -> void:
 	move_towards_target(delta)
 	
 	# Check if the target has been reached and start the progress bar growth.
-	if has_reached_target() and _task_target != null and not is_progress_bar_active and not _task_completed:
+	if has_reached_target() and _task_target != null and not _is_progress_bar_active and not _task_completed:
 		var task_duration = _task_target.get("task_duration")  # Replace with the actual property or method to get the duration.
 		if task_duration > 0.0:
 			start_progress_bar(task_duration)
 			
 # 启动进度条增长的方法
 func start_progress_bar(task_duration: float) -> void:
-	if is_progress_bar_active:
+	if _is_progress_bar_active:
 		return  # If progress bar is already active, do nothing.
 	
-	is_progress_bar_active = true  # Set the flag to indicate the progress bar is active.
+	_is_progress_bar_active = true  # Set the flag to indicate the progress bar is active.
 	var progress_bar = $ProgressBar as ProgressBar  # 假设进度条节点是 ProgressBar 类型，并作为本脚本的子节点。
 
 	progress_bar.value = 0  # 初始化为 0
@@ -43,7 +43,7 @@ func start_progress_bar(task_duration: float) -> void:
 
 func after_proc():
 	print("收获完成")
-	is_progress_bar_active = false  # Reset the flag when the task is complete.
+	_is_progress_bar_active = false  # Reset the flag when the task is complete.
 	_task_completed = true  # Set the task completed flag.
 	$ProgressBar.visible = false
 	
@@ -67,10 +67,10 @@ func has_reached_target() -> bool:
 # New method to set the current target position.
 func set_target_position(target_position: Vector2) -> void:
 	_current_target_position = target_position
-	has_moving_target = true  # Set the flag to indicate there is a target.
+	_has_moving_target = true  # Set the flag to indicate there is a target.
 
 func move_towards_target(delta: float) -> void:
-	if has_moving_target and not has_reached_target():
+	if _has_moving_target and not has_reached_target():
 		var direction = (_current_target_position - position).normalized()
 		position += direction * move_speed * delta
 		
@@ -78,12 +78,12 @@ func move_towards_target(delta: float) -> void:
 		if has_reached_target():
 			position = _current_target_position  # Snap to the target once within tolerance.
 			_clear_target()  # Clear the target once it’s reached.
-	elif has_moving_target:
+	elif _has_moving_target:
 		position = _current_target_position  # Snap to the target once within tolerance.
 		_clear_target()  # Clear the target once it’s reached.
 
 func _clear_target() -> void:
-	has_moving_target = false  # Clear the target flag.
+	_has_moving_target = false  # Clear the target flag.
 	# Do not reset the position to Vector2.ZERO to avoid unnecessary movements.
 
 # Debug button signal method.
