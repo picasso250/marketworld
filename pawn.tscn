@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://edaesig3ro3p"]
+[gd_scene load_steps=6 format=3 uid="uid://edaesig3ro3p"]
 
 [ext_resource type="Texture2D" uid="uid://co4epw5s42pwu" path="res://icon.svg" id="1_tm8dm"]
 [ext_resource type="Script" path="res://pawn.gd" id="2_erj4c"]
+[ext_resource type="Script" path="res://status_text.gd" id="3_gx70p"]
 
 [sub_resource type="Theme" id="Theme_tkjw4"]
 
@@ -26,6 +27,7 @@ offset_bottom = 92.505
 theme = SubResource("Theme_tkjw4")
 theme_override_styles/background = SubResource("StyleBoxFlat_q1edu")
 value = 33.0
+show_percentage = false
 
 [node name="StatusText" type="Label" parent="."]
 visible = false
@@ -34,5 +36,6 @@ offset_top = -98.0
 offset_right = 83.0
 offset_bottom = -75.0
 text = "发呆中……"
+script = ExtResource("3_gx70p")
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
