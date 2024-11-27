@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://ibag5wmonx4g"]
+
+[ext_resource type="Script" path="res://farmland.gd" id="1_dl73f"]
+
+[node name="Farmland" type="ColorRect"]
+offset_right = 563.0
+offset_bottom = 330.0
+tooltip_text = "xxxxss"
+color = Color(0.419608, 0.556863, 0.137255, 1)
+script = ExtResource("1_dl73f")

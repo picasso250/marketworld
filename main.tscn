@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://didl8y41kxrsl"]
+
+[ext_resource type="PackedScene" uid="uid://ibag5wmonx4g" path="res://farmland.tscn" id="1_xuha6"]
+[ext_resource type="PackedScene" uid="uid://edaesig3ro3p" path="res://pawn.tscn" id="2_rkcax"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Farmland" parent="." instance=ExtResource("1_xuha6")]
+
+[node name="Pawn" parent="." instance=ExtResource("2_rkcax")]
+position = Vector2(207, 169)
