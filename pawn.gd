@@ -2,81 +2,58 @@ extends Sprite2D
 
 signal debug_button_pressed
 
-var progress_bar: ColorRect  # Now a member variable
-var progress_bar_node: NodePath = "ProgressBar"
-var _progress: float = 0.0
-var _target_duration: float = 0.0
-var _elapsed_time: float = 0.0
-var _is_progressing: bool = false
+@export var move_speed: float = 100.0  # Speed at which the pawn moves towards the target.
+
 var _current_target_position: Vector2 = Vector2.ZERO
 var _task_type: String = ""
-@export var move_speed: float = 100.0  # Speed at which the pawn moves towards the target.
 var _task_target: Node = null  # New variable to store the task target.
 var has_moving_target: bool = false  # Renamed variable to track if the pawn has a moving target.
-var _completion_callback: Callable  # New variable to store the completion callback.
+var is_progress_bar_active: bool = false  # New variable to track if the progress bar is active.
+var _task_completed: bool = false  # New variable to track if the task is completed.
 
-func _ready():
-	# Initialize progress_bar as a global variable
-	progress_bar = get_node(progress_bar_node) as ColorRect
-	# You can safely assume that the ProgressBar will be available.
-	# Set progress bar size based on texture width.
-	var texture_size = texture.get_size()
-	progress_bar.size.x = texture_size.x
-	progress_bar.position.x = -texture_size.x / 2
 
-# Function to start growing the progress bar over a given duration.
-func start_progress_bar(duration: float, callback: Callable) -> void:
-	if duration <= 0.0:
-		push_error("Duration must be greater than 0")
-		return
-	
-	_progress = 0.0
-	_target_duration = duration
-	_elapsed_time = 0.0
-	_is_progressing = true
-	
-	progress_bar.size.x = 0
-	_completion_callback = callback  # Store the callback
-
-# Function to stop progress bar growth manually.
-func stop_progress_bar_growth() -> void:
-	_is_progressing = false
-	_progress = 0.0
-	_elapsed_time = 0.0
 
 func _process(delta: float) -> void:
-	if not _is_progressing:
-		# Move towards target if a target is set.
-		move_towards_target(delta)
-		
-		# Check if the target has been reached and start the progress bar growth.
-		if has_reached_target() and _task_target != null:
-			# Assuming that the task target has a method to get the task duration, 
-			# for example `get_task_duration()` which should return the task's duration.
-			var task_duration = _task_target.get("task_duration")  # Replace with the actual property or method to get the duration.
-			if task_duration > 0.0:
-				start_progress_bar(task_duration,after_proc)
-				
+	# Move towards target if a target is set.
+	move_towards_target(delta)
+	
+	# Check if the target has been reached and start the progress bar growth.
+	if has_reached_target() and _task_target != null and not is_progress_bar_active and not _task_completed:
+		var task_duration = _task_target.get("task_duration")  # Replace with the actual property or method to get the duration.
+		if task_duration > 0.0:
+			start_progress_bar(task_duration)
+			
+# 启动进度条增长的方法
+func start_progress_bar(task_duration: float) -> void:
+	if is_progress_bar_active:
+		return  # If progress bar is already active, do nothing.
+	
+	is_progress_bar_active = true  # Set the flag to indicate the progress bar is active.
+	var progress_bar = $ProgressBar as ProgressBar  # 假设进度条节点是 ProgressBar 类型，并作为本脚本的子节点。
+	if progress_bar == null:
+		print("ProgressBar node not found!")
 		return
-	
-	_elapsed_time += delta
-	_progress = clamp(_elapsed_time / _target_duration, 0.0, 1.0)
-	
-	var texture_size = texture.get_size()
-	progress_bar.size.x = _progress * texture_size.x
-	
-	if _progress >= 1.0:
-		_is_progressing = false
-		
-		# Execute the callback if it's set.
-		if _completion_callback != null:
-			_completion_callback.call()
+
+	progress_bar.value = 0  # 初始化为 0
+	progress_bar.visible = true  # 确保进度条可见
+
+	# 使用 Tween 逐渐增长进度条
+	var tween = get_tree().create_tween()
+	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	tween.tween_property(progress_bar, "value", 100, task_duration)
+	tween.tween_callback(after_proc)
+
 func after_proc():
 	print("收获完成")
+	is_progress_bar_active = false  # Reset the flag when the task is complete.
+	_task_completed = true  # Set the task completed flag.
+	$ProgressBar.visible = false
+
 # Updated function to set the current task with a target, type, and task_target.
 func set_current_task(target: Node, task_type: String) -> void:
 	_task_type = task_type
 	_task_target = target  # Set the task target.
+	_task_completed = false  # Reset the task completed flag.
 	set_target_position(target.get_center_position())
 	
 	# Print the task type.
@@ -108,7 +85,6 @@ func move_towards_target(delta: float) -> void:
 func _clear_target() -> void:
 	has_moving_target = false  # Clear the target flag.
 	# Do not reset the position to Vector2.ZERO to avoid unnecessary movements.
-
 
 # Debug button signal method.
 func _on_button_pressed():
