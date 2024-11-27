@@ -2,6 +2,7 @@ extends Sprite2D
 
 signal debug_button_pressed
 
+var progress_bar: ColorRect  # Now a member variable
 var progress_bar_node: NodePath = "ProgressBar"
 var _progress: float = 0.0
 var _target_duration: float = 0.0
@@ -14,7 +15,8 @@ var _task_target: Node = null  # New variable to store the task target.
 var has_moving_target: bool = false  # Renamed variable to track if the pawn has a moving target.
 
 func _ready():
-	var progress_bar = get_node(progress_bar_node) as ColorRect
+	# Initialize progress_bar as a global variable
+	progress_bar = get_node(progress_bar_node) as ColorRect
 	# You can safely assume that the ProgressBar will be available.
 	# Set progress bar size based on texture width.
 	var texture_size = texture.get_size()
@@ -27,7 +29,6 @@ func start_progress_bar_growth(duration: float) -> void:
 		push_error("Duration must be greater than 0")
 		return
 	
-	var progress_bar = get_node(progress_bar_node) as ColorRect
 	_progress = 0.0
 	_target_duration = duration
 	_elapsed_time = 0.0
@@ -59,7 +60,6 @@ func _process(delta: float) -> void:
 	_elapsed_time += delta
 	_progress = clamp(_elapsed_time / _target_duration, 0.0, 1.0)
 	
-	var progress_bar = get_node(progress_bar_node) as ColorRect
 	var texture_size = texture.get_size()
 	progress_bar.size.x = _progress * texture_size.x
 	
