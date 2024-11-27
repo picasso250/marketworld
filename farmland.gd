@@ -10,11 +10,6 @@ var time_since_last_maturity = 0
 var is_mature = false
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body if needed initially
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	# 更新自上次成熟后经过的时间
@@ -33,3 +28,7 @@ func update_tooltip():
 		self.tooltip_text = "这片农田已经成熟，可以收割啦！"
 	else:
 		self.tooltip_text = "这片农田正在生长中，请耐心等待成熟。"+str(time_since_last_maturity)
+
+# 返回农田的中心位置（二维向量）
+func get_center_position() -> Vector2:
+	return position + size / 2

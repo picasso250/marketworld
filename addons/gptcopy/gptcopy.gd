@@ -28,7 +28,7 @@ func _on_copy_button_pressed():
 		var script_code = current_script.get_source_code()
 		var file_name = current_script.resource_path.get_file()
 		# 包裹代码并添加文件名
-		var formatted_code = "File: "+(file_name)+ "\n```\n" + script_code + "\n```\n"
+		var formatted_code = "File: "+(file_name)+ "\n```\n" + script_code + "\n```\n\n需求： "
 		# 将代码复制到剪贴板
 		DisplayServer.clipboard_set(formatted_code)
 		# 通知用户操作成功

@@ -1,11 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://didl8y41kxrsl"]
+[gd_scene load_steps=4 format=3 uid="uid://didl8y41kxrsl"]
 
+[ext_resource type="Script" path="res://main.gd" id="1_12duq"]
 [ext_resource type="PackedScene" uid="uid://ibag5wmonx4g" path="res://farmland.tscn" id="1_xuha6"]
 [ext_resource type="PackedScene" uid="uid://edaesig3ro3p" path="res://pawn.tscn" id="2_rkcax"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_12duq")
 
 [node name="Farmland" parent="." instance=ExtResource("1_xuha6")]
+offset_left = 480.0
+offset_top = 193.0
+offset_right = 1043.0
+offset_bottom = 523.0
 
 [node name="Pawn" parent="." instance=ExtResource("2_rkcax")]
 position = Vector2(207, 169)
+move_speed = 333.0
+
+[connection signal="debug_button_pressed" from="Pawn" to="." method="_on_pawn_debug_button_pressed"]
