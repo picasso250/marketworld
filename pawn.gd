@@ -5,6 +5,15 @@ signal debug_button_pressed2
 
 @export var move_speed: float = 100.0  # Speed at which the pawn moves towards the target.
 
+@export var satiation: float: # 饱食度
+	get:
+		return _satiation
+	set(value):
+		_satiation = value
+		$Label.text = "饱食度："+str(_satiation)
+
+var _satiation: float = 100.0  # 饱食度
+
 var _current_target_position: Vector2 = Vector2.ZERO
 var _task_type: String = ""
 var _task_target: Node = null  # New variable to store the task target.
@@ -50,7 +59,7 @@ func after_proc():
 	
 	$StatusText.show_status_with_fade(_task_type+" 完成")
 	
-	_task_target.do_task(_task_type)
+	_task_target.do_task(_task_type, self)
 
 
 # Updated function to set the current task with a target, type, and task_target.

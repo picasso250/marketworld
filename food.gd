@@ -3,6 +3,7 @@ extends ColorRect
 @export var task_durations = {
 	"eat": 1,
 }
+@export var nutrition  = 100 # 营养含量
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -15,11 +16,11 @@ func _process(delta):
 func get_center_position() -> Vector2:
 	return position + size / 2
 
-func do_task(task_type: String):
+func do_task(task_type: String, subject):
 	match task_type:
 		"eat":
 			print("Task: Eating")
-			_perform_eating_task()
+			_perform_eating_task(subject)
 
 
 		_:
@@ -27,9 +28,10 @@ func do_task(task_type: String):
 			# Handle unknown task type if necessary
 
 # Define the specific task functions
-func _perform_eating_task():
+func _perform_eating_task(subject):
 	# Implementation of eating task
 	print("Performing eating task")
 	var duration = task_durations["eat"]
 	print("Duration: %s" % duration)
 	queue_free()
+	subject.satiation += nutrition

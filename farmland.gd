@@ -36,7 +36,7 @@ func update_tooltip():
 func get_center_position() -> Vector2:
 	return position + size / 2
 
-func do_task(task_type: String):
+func do_task(task_type: String, subject):
 	match task_type:
 		"harvest":
 			# Add your code for the 'eat' task here
