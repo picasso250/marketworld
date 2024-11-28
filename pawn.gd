@@ -9,9 +9,9 @@ signal debug_button_pressed2
 	get:
 		return _satiation
 	set(value):
-		_satiation = value
-		$Label.text = "饱食度："+str(_satiation)
+		_satiation = min(value, satiation_cap)  # Ensure satiation doesn't exceed the cap.
 
+@export var satiation_cap: float = 100.0  # The maximum satiation value.
 @export var hunger_rate: float = 5.0  # Speed at which satiation decreases over time.
 
 var _satiation: float = 100.0  # 饱食度
@@ -24,7 +24,6 @@ var _is_progress_bar_active: bool = false  # New variable to track if the progre
 var _task_completed: bool = false  # New variable to track if the task is completed.
 
 func _process(delta: float) -> void:
-	$Label.text = "饱食度："+str(_satiation)
 	
 	# Move towards target if a target is set.
 	move_towards_target(delta)
@@ -43,7 +42,7 @@ func reduce_satiation(delta: float) -> void:
 	_satiation -= hunger_rate * delta
 	if _satiation < 0:
 		_satiation = 0
-	$Label.text = "饱食度："+str(_satiation)
+	$Label.text = "饱食度："+str(round(_satiation))
 
 # 启动进度条增长的方法
 func start_progress_bar(task_duration: float) -> void:
