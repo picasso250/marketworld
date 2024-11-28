@@ -9,8 +9,9 @@ var time_since_last_maturity = 0
 # 标记农田是否已经成熟
 var is_mature = false
 
-@export var task_duration = 1
-
+@export var task_durations = {
+	"harvest": 1,
+}
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

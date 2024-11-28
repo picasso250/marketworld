@@ -19,7 +19,7 @@ func _process(delta: float) -> void:
 	
 	# Check if the target has been reached and start the progress bar growth.
 	if has_reached_target() and _task_target != null and not _is_progress_bar_active and not _task_completed:
-		var task_duration = _task_target.get("task_duration")  # Replace with the actual property or method to get the duration.
+		var task_duration = _task_target.get("task_durations").get(_task_type)
 		if task_duration > 0.0:
 			start_progress_bar(task_duration)
 			
@@ -48,7 +48,7 @@ func after_proc():
 	_task_completed = true  # Set the task completed flag.
 	$ProgressBar.visible = false
 	
-	$StatusText.show_status_with_fade("收获完成")
+	$StatusText.show_status_with_fade(_task_type+" 完成")
 	
 	_task_target.do_task(_task_type)
 
