@@ -12,6 +12,8 @@ signal debug_button_pressed2
 		_satiation = value
 		$Label.text = "饱食度："+str(_satiation)
 
+@export var hunger_rate: float = 5.0  # Speed at which satiation decreases over time.
+
 var _satiation: float = 100.0  # 饱食度
 
 var _current_target_position: Vector2 = Vector2.ZERO
@@ -21,17 +23,28 @@ var _has_moving_target: bool = false  # Renamed variable to track if the pawn ha
 var _is_progress_bar_active: bool = false  # New variable to track if the progress bar is active.
 var _task_completed: bool = false  # New variable to track if the task is completed.
 
-
 func _process(delta: float) -> void:
+	$Label.text = "饱食度："+str(_satiation)
+	
 	# Move towards target if a target is set.
 	move_towards_target(delta)
+	
+	# Reduce satiation over time.
+	reduce_satiation(delta)
 	
 	# Check if the target has been reached and start the progress bar growth.
 	if has_reached_target() and _task_target != null and not _is_progress_bar_active and not _task_completed:
 		var task_duration = _task_target.get("task_durations").get(_task_type)
 		if task_duration > 0.0:
 			start_progress_bar(task_duration)
-			
+
+# Method to reduce satiation over time.
+func reduce_satiation(delta: float) -> void:
+	_satiation -= hunger_rate * delta
+	if _satiation < 0:
+		_satiation = 0
+	$Label.text = "饱食度："+str(_satiation)
+
 # 启动进度条增长的方法
 func start_progress_bar(task_duration: float) -> void:
 	if _is_progress_bar_active:
@@ -60,7 +73,6 @@ func after_proc():
 	$StatusText.show_status_with_fade(_task_type+" 完成")
 	
 	_task_target.do_task(_task_type, self)
-
 
 # Updated function to set the current task with a target, type, and task_target.
 func set_current_task(target: Node, task_type: String) -> void:
@@ -102,7 +114,6 @@ func _clear_target() -> void:
 # Debug button signal method.
 func _on_button_pressed():
 	emit_signal("debug_button_pressed")
-
 
 func find_items_by_name(item_name: String) -> Array:
 	var parent = get_parent()
