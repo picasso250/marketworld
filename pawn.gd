@@ -48,6 +48,12 @@ func after_proc():
 	$ProgressBar.visible = false
 	
 	$StatusText.show_status_with_fade("收获完成")
+	
+	var grain = _task_target.get_node("Grain").duplicate()
+	grain.visible = true
+	#grain.position = position+Vector2(200,200)
+	add_child(grain)
+	
 
 # Updated function to set the current task with a target, type, and task_target.
 func set_current_task(target: Node, task_type: String) -> void:

@@ -28,7 +28,7 @@ func show_status_with_fade(text: String) -> void:
 		self, # 动画目标节点
 		"modulate:a", # 修改透明度属性
 		0.0, # 结束值
-		2.0, # 持续时间
+		1.0, # 持续时间
 	)
 	
 	# 动画完成后隐藏文本
