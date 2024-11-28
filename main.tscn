@@ -26,3 +26,4 @@ position = Vector2(99, 107)
 move_speed = 666.0
 
 [connection signal="debug_button_pressed" from="Pawn" to="." method="_on_pawn_debug_button_pressed"]
+[connection signal="debug_button_pressed2" from="Pawn" to="." method="_on_pawn_debug_button_pressed_2"]

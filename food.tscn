@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfljig0obxlif"]
+
+[ext_resource type="Shader" path="res://dot.gdshader" id="1_esy2b"]
+[ext_resource type="Script" path="res://food.gd" id="2_56a2l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_laxo3"]
+shader = ExtResource("1_esy2b")
+shader_parameter/dot_color = Vector4(0.96, 0.87, 0.7, 1)
+shader_parameter/radius = 0.4
+
+[node name="Food" type="ColorRect"]
+material = SubResource("ShaderMaterial_laxo3")
+offset_right = 64.0
+offset_bottom = 64.0
+tooltip_text = "小麦（粮食）"
+script = ExtResource("2_56a2l")

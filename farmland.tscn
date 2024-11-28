@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ibag5wmonx4g"]
 
 [ext_resource type="Script" path="res://farmland.gd" id="1_dl73f"]
-[ext_resource type="PackedScene" uid="uid://cfljig0obxlif" path="res://grain.tscn" id="2_fcfnv"]
+[ext_resource type="PackedScene" uid="uid://cfljig0obxlif" path="res://food.tscn" id="2_fcfnv"]
 
 [node name="Farmland" type="ColorRect"]
 offset_right = 563.0
@@ -16,10 +16,6 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "农田"
 
-[node name="Grain" parent="." instance=ExtResource("2_fcfnv")]
+[node name="Food" parent="." instance=ExtResource("2_fcfnv")]
 visible = false
 layout_mode = 0
-offset_left = 34.0
-offset_top = 36.0
-offset_right = 98.0
-offset_bottom = 100.0

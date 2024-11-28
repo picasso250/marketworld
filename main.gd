@@ -12,5 +12,5 @@ func _process(delta):
 
 
 func _on_pawn_debug_button_pressed():
-	$Pawn.set_current_task($Farmland, "收割")
+	$Pawn.set_current_task($Farmland, "harvest")
 	#$Pawn.set_target_position( Vector2(800,800))

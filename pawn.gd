@@ -1,6 +1,7 @@
 extends Sprite2D
 
 signal debug_button_pressed
+signal debug_button_pressed2
 
 @export var move_speed: float = 100.0  # Speed at which the pawn moves towards the target.
 
@@ -49,11 +50,8 @@ func after_proc():
 	
 	$StatusText.show_status_with_fade("收获完成")
 	
-	var grain = _task_target.get_node("Grain").duplicate()
-	grain.visible = true
-	#grain.position = position+Vector2(200,200)
-	add_child(grain)
-	
+	_task_target.do_task(_task_type)
+
 
 # Updated function to set the current task with a target, type, and task_target.
 func set_current_task(target: Node, task_type: String) -> void:
@@ -95,3 +93,22 @@ func _clear_target() -> void:
 # Debug button signal method.
 func _on_button_pressed():
 	emit_signal("debug_button_pressed")
+
+
+func find_items_by_name(item_name: String) -> Array:
+	var parent = get_parent()
+	var children = parent.get_children()
+	var results = []
+
+	for child in children:
+		if child.name == item_name:
+			results.append(child)
+	
+	return results
+
+func _on_button_2_pressed():
+	var items = find_items_by_name("Food")
+	
+	if items.size() > 0:
+		var first_item = items[0]
+		set_current_task(first_item, "eat")

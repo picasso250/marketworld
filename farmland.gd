@@ -34,3 +34,29 @@ func update_tooltip():
 # 返回农田的中心位置（二维向量）
 func get_center_position() -> Vector2:
 	return position + size / 2
+
+func do_task(task_type: String):
+	match task_type:
+		"harvest":
+			# Add your code for the 'eat' task here
+			print("Task: harvest")
+			_perform_harvest_task()
+
+		_:
+			print("Unknown task type: %s" % task_type)
+			# Handle unknown task type if necessary
+
+# Define the specific task functions
+func _perform_harvest_task():
+	# Implementation of eating task
+	print("Performing harvest task")
+		
+	var food = get_node("Food").duplicate()
+	food.visible = true
+
+	var random_range = 80
+	
+	# Generate a random offset position
+	var random_offset = Vector2(randf_range(-random_range, random_range), randf_range(-random_range, random_range))
+	food.position = get_center_position() + random_offset
+	get_parent().add_child(food) # Add grain to the parent node.
