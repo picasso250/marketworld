@@ -3,15 +3,18 @@ extends Sprite2D
 signal debug_button_pressed
 signal debug_button_pressed2
 
+## 速度
 @export var move_speed: float = 100.0  # Speed at which the pawn moves towards the target.
 
+## 饱食度
 @export var satiation: float: # 饱食度
 	get:
 		return _satiation
 	set(value):
 		_satiation = min(value, satiation_cap)  # Ensure satiation doesn't exceed the cap.
-
+## 最大饱食度
 @export var satiation_cap: float = 100.0  # The maximum satiation value.
+## 饥饿速率
 @export var hunger_rate: float = 5.0  # Speed at which satiation decreases over time.
 
 var _satiation: float = 100.0  # 饱食度
